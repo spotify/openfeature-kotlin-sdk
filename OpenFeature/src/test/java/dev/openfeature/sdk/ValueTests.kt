@@ -5,7 +5,7 @@ import kotlinx.serialization.json.decodeFromJsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 import org.junit.Assert
 import org.junit.Test
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 class ValueTests {
 

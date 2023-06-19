@@ -1,8 +1,9 @@
 package dev.openfeature.sdk
 
+import kotlinx.datetime.Clock
 import org.junit.Assert
 import org.junit.Test
-import java.time.Instant
+import kotlinx.datetime.Instant
 
 class EvalContextTests {
 
@@ -16,7 +17,7 @@ class EvalContextTests {
     @Test
     fun testContextStoresPrimitiveValues() {
         val ctx = MutableContext()
-        val now = Instant.now()
+        val now: Instant = Clock.System.now()
 
         ctx.add("string", Value.String("value"))
         Assert.assertEquals("value", ctx.getValue("string")?.asString())
@@ -67,7 +68,7 @@ class EvalContextTests {
     @Test
     fun testContextCanConvertToMap() {
         val ctx = MutableContext()
-        val now = Instant.now()
+        val now = Clock.System.now()
         ctx.add("str1", Value.String("test1"))
         ctx.add("str2", Value.String("test2"))
         ctx.add("bool1", Value.Boolean(true))
@@ -126,7 +127,7 @@ class EvalContextTests {
     @Test
     fun testContextConvertsToObjectMap() {
         val key = "key1"
-        val now = Instant.now()
+        val now = Clock.System.now()
         val ctx = MutableContext(key)
         ctx.add("string", Value.String("value"))
         ctx.add("bool", Value.Boolean(false))

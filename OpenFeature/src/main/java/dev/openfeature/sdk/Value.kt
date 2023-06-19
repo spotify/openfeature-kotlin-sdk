@@ -1,16 +1,10 @@
 package dev.openfeature.sdk
 
 import dev.openfeature.sdk.exceptions.OpenFeatureError
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.jsonObject
-import java.time.Instant
 
 @Serializable(with = ValueSerializer::class)
 sealed interface Value {
@@ -19,7 +13,7 @@ sealed interface Value {
     fun asBoolean(): kotlin.Boolean? = if (this is Boolean) boolean else null
     fun asInteger(): Int? = if (this is Integer) integer else null
     fun asDouble(): kotlin.Double? = if (this is Double) double else null
-    fun asInstant(): java.time.Instant? = if (this is Instant) instant else null
+    fun asInstant(): kotlinx.datetime.Instant? = if (this is Instant) instant else null
     fun asList(): kotlin.collections.List<Value>? = if (this is List) list else null
     fun asStructure(): Map<kotlin.String, Value>? = if (this is Structure) structure else null
     fun isNull(): kotlin.Boolean = this is Null
@@ -37,7 +31,7 @@ sealed interface Value {
     data class Double(val double: kotlin.Double) : Value
 
     @Serializable
-    data class Instant(@Serializable(InstantSerializer::class) val instant: java.time.Instant) : Value
+    data class Instant(val instant: kotlinx.datetime.Instant) : Value
 
     @Serializable
     data class Structure(val structure: Map<kotlin.String, Value>) : Value
@@ -68,10 +62,4 @@ object ValueSerializer : JsonContentPolymorphicSerializer<Value>(Value::class) {
         setOf("structure") -> Value.Structure.serializer()
         else -> throw OpenFeatureError.ParseError("couldn't find deserialization key for Value")
     }
-}
-
-object InstantSerializer : KSerializer<Instant> {
-    override val descriptor = PrimitiveSerialDescriptor("Instant", PrimitiveKind.STRING)
-    override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeString(value.toString())
-    override fun deserialize(decoder: Decoder): Instant = Instant.parse(decoder.decodeString())
 }
