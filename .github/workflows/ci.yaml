@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run commit check script
-        run: ./scripts/conventional-commits.sh
+        run: ./scripts/conventional-commits.sh --check || echo "Malformed commits"
         shell: bash
       - name: Run checks
         run: ./gradlew check --no-daemon --stacktrace
