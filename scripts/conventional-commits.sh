@@ -76,6 +76,8 @@ function print_error() {
   echo -e "\033[37mActual length: \033[33m$(echo $commit_message | wc -c)\033[0m\n"
 }
 
+set -e
+
 set_config
 
 # check if the repo has a config file
