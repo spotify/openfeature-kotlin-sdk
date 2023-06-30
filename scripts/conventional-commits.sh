@@ -3,8 +3,6 @@
 # Inspired by Sailr
 # https://github.com/craicoverflow/sailr/blob/master/sailr.sh
 
-release_tag=main
-
 # checks that jq is usable
 function check_jq_exists_and_executable {
 if ! [ -x "$(command -v jq)" ]; then
@@ -88,8 +86,10 @@ check_jq_exists_and_executable
 
 # get the first line of the commit message
 if [[ ! -f "$1" ]]; then
+  echo "inside 1"
   START_LINE="$(git log --oneline --format=%B -n 1 HEAD | head -n 1)"
 else
+  echo "inside 2: $1"
   INPUT_FILE=$1
   START_LINE=`head -n1 $INPUT_FILE`
 fi
