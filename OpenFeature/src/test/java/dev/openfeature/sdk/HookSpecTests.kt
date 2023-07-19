@@ -12,7 +12,7 @@ class HookSpecTests {
 
     @Test
     fun testNoErrorHookCalled() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider())
         val client = OpenFeatureAPI.getClient()
         val hook = GenericSpyHookMock()
 
@@ -26,7 +26,7 @@ class HookSpecTests {
 
     @Test
     fun testErrorHookButNoAfterCalled() = runTest {
-        OpenFeatureAPI.setProvider(AlwaysBrokenProvider())
+        OpenFeatureAPI.setProviderAsync(AlwaysBrokenProvider())
         val client = OpenFeatureAPI.getClient()
         val hook = GenericSpyHookMock()
 
@@ -44,7 +44,7 @@ class HookSpecTests {
         val addEval: (String) -> Unit = { eval: String -> evalOrder += eval }
 
         provider.hooks = listOf(GenericSpyHookMock("provider", addEval))
-        OpenFeatureAPI.setProvider(provider)
+        OpenFeatureAPI.setProviderAsync(provider)
         OpenFeatureAPI.addHooks(listOf(GenericSpyHookMock("api", addEval)))
         val client = OpenFeatureAPI.getClient()
         client.addHooks(listOf(GenericSpyHookMock("client", addEval)))

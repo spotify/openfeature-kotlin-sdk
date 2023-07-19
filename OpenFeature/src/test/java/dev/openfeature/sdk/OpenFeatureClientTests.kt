@@ -10,7 +10,7 @@ import org.junit.Test
 class OpenFeatureClientTests {
     @Test
     fun testShouldNowThrowIfHookHasDifferentTypeArgument() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider())
         OpenFeatureAPI.addHooks(listOf(GenericSpyHookMock()))
         val stringValue = OpenFeatureAPI.getClient().getStringValue("test", "defaultTest")
         assertEquals(stringValue, "defaultTest")

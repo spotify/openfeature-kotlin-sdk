@@ -1,6 +1,8 @@
 package dev.openfeature.sdk
 
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 object OpenFeatureAPI {
     private var provider: FeatureProvider? = null
@@ -8,10 +10,23 @@ object OpenFeatureAPI {
     var hooks: List<Hook<*>> = listOf()
         private set
 
-    suspend fun setProvider(provider: FeatureProvider, initialContext: EvaluationContext? = null) = coroutineScope {
+    suspend fun setProviderAsync(
+        provider: FeatureProvider,
+        initialContext: EvaluationContext? = null
+    ) = coroutineScope {
         provider.initialize(initialContext ?: context)
         this@OpenFeatureAPI.provider = provider
         if (initialContext != null) context = initialContext
+    }
+
+    fun setProvider(provider: FeatureProvider, initialContext: EvaluationContext? = null) {
+        runBlocking {
+            launch {
+                provider.initialize(initialContext ?: context)
+                this@OpenFeatureAPI.provider = provider
+                if (initialContext != null) context = initialContext
+            }
+        }
     }
 
     fun getProvider(): FeatureProvider? {

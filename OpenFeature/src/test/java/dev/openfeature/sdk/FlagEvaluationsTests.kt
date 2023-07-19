@@ -15,7 +15,7 @@ class FlagEvaluationsTests {
     fun testApiSetsProvider() = runTest {
         val provider = NoOpProvider()
 
-        OpenFeatureAPI.setProvider(provider)
+        OpenFeatureAPI.setProviderAsync(provider)
         Assert.assertEquals(provider, OpenFeatureAPI.getProvider())
     }
 
@@ -46,7 +46,7 @@ class FlagEvaluationsTests {
 
     @Test
     fun testSimpleFlagEvaluation() = runTest {
-        OpenFeatureAPI.setProvider(DoSomethingProvider())
+        OpenFeatureAPI.setProviderAsync(DoSomethingProvider())
         val client = OpenFeatureAPI.getClient()
         val key = "key"
 
@@ -68,7 +68,7 @@ class FlagEvaluationsTests {
 
     @Test
     fun testDetailedFlagEvaluation() = runTest {
-        OpenFeatureAPI.setProvider(DoSomethingProvider())
+        OpenFeatureAPI.setProviderAsync(DoSomethingProvider())
         val client = OpenFeatureAPI.getClient()
         val key = "key"
 
@@ -95,7 +95,7 @@ class FlagEvaluationsTests {
 
     @Test
     fun testHooksAreFired() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider())
         val client = OpenFeatureAPI.getClient()
 
         val clientHook = GenericSpyHookMock()
@@ -110,7 +110,7 @@ class FlagEvaluationsTests {
 
     @Test
     fun testBrokenProvider() = runTest {
-        OpenFeatureAPI.setProvider(AlwaysBrokenProvider())
+        OpenFeatureAPI.setProviderAsync(AlwaysBrokenProvider())
         val client = OpenFeatureAPI.getClient()
 
         client.getBooleanValue("testKey", false)

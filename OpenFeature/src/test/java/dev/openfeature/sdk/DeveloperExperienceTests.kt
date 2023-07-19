@@ -19,14 +19,14 @@ class DeveloperExperienceTests {
 
     @Test
     fun testSimpleBooleanFlag() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider(), ImmutableContext())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider(), ImmutableContext())
         val booleanValue = OpenFeatureAPI.getClient().getBooleanValue("test", false)
         Assert.assertFalse(booleanValue)
     }
 
     @Test
     fun testClientHooks() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider(), ImmutableContext())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider(), ImmutableContext())
         val client = OpenFeatureAPI.getClient()
 
         val hook = GenericSpyHookMock()
@@ -38,7 +38,7 @@ class DeveloperExperienceTests {
 
     @Test
     fun testEvalHooks() = runTest {
-        OpenFeatureAPI.setProvider(NoOpProvider(), ImmutableContext())
+        OpenFeatureAPI.setProviderAsync(NoOpProvider(), ImmutableContext())
         val client = OpenFeatureAPI.getClient()
 
         val hook = GenericSpyHookMock()
@@ -50,7 +50,7 @@ class DeveloperExperienceTests {
 
     @Test
     fun testBrokenProvider() = runTest {
-        OpenFeatureAPI.setProvider(AlwaysBrokenProvider(), ImmutableContext())
+        OpenFeatureAPI.setProviderAsync(AlwaysBrokenProvider(), ImmutableContext())
         val client = OpenFeatureAPI.getClient()
 
         val details = client.getBooleanDetails("test", false)
