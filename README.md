@@ -9,5 +9,5 @@
 
 ## 👋 Hey there! This repo is archived. 
 
-## You can find the official SDK in the [OpenFeature Kotlin SDK repo](https://github.com/open-feature/kotlin-sdk)
+### You can find the official SDK in the [OpenFeature Kotlin SDK repo](https://github.com/open-feature/kotlin-sdk)
 
